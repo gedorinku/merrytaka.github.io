@@ -77,7 +77,15 @@ function addMarker( n , single ) {
 }
 function GetTest(){
    const request = new XMLHttpRequest();
-   request.open("GET",`https://asciidwango.github.io/js-primer/use-case/ajaxapp/entrypoint/`);
+   request.open("GET",`function GetTest(){
+   const request = new XMLHttpRequest();
+   request.open("GET",`http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state`);
+   request.addEventListener("load", (event) => {
+    console.log(event.target.status); // => 200
+    console.log(event.target.responseText); // => "{...}"
+    request.send();
+});
+ }`);
    request.addEventListener("load", (event) => {
     console.log(event.target.status); // => 200
     console.log(event.target.responseText); // => "{...}"
