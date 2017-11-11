@@ -1,75 +1,116 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-<title>マーカーを表示する - YOLP JavaScriptマップAPI サンプルコード</title>
-<script src="https://map.yahooapis.jp/js/V1/jsapi?appid=dj00aiZpPXFkWU1aWkdUSkhTeiZzPWNvbnN1bWVyc2VjcmV0Jng9MWQ-" type="text/javascript"  charset="UTF-8" ></script>
-<style>
-.sub-menu {
-    margin:4px;
-    padding:4px;
-    border:1px solid;
-}
-.sub-menu h3 {
-    font-size:14px;
-    margin:2px;
-    padding:2px;
-}
-</style>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>IoT道の駅</title>
+
+  <body>
+    <div class="sub-menu">
+      <div id="state"></div>
+    </div>
+    <script>
+      var state;
+
+      function GetState() {
+        var url = "http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state";
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onload = function() {
+          state = JSON.parse(xhr.responseText);
+          if (xhr.readyState == 4 && xhr.status == "200") {
+            console.log(state);
+            //alert(JSON.stringify(request));
+            //alert(request.places[2].x);
+            //alert("Finish Serching");
+          } else {
+            alert.error(state);
+          }
+        }
+        xhr.send(null);
+        var doorstate = state.value;
+        var ans = "";
+        if (doorstate == 1) {
+          ans = "います。"
+        } else {
+          ans = "いません。"
+        }
+        console.log(ans);
+        document.getElementById("state").textContent = "トイレの中に人は" + ans;
+      }
+      // 上記のGetState関数を500ミリ秒ごと(毎秒)に実行
+      setInterval(GetState, 1000);
+    </script>
+
+  </body>
+  <script src="https://map.yahooapis.jp/js/V1/jsapi?appid=dj00aiZpPXFkWU1aWkdUSkhTeiZzPWNvbnN1bWVyc2VjcmV0Jng9MWQ-" type="text/javascript" charset="UTF-8"></script>
+  <style>
+    .sub-menu {
+      margin: 4px;
+      padding: 4px;
+      border: 1px solid;
+    }
+
+    .sub-menu h3 {
+      font-size: 14px;
+      margin: 2px;
+      padding: 2px;
+    }
+  </style>
 </head>
+
 <body>
-<div id="map" style="width:600px; height:480px;"></div>
-<div class="sub-menu">
-<h3>アイコン追加</h3>
-<input type="button" value="search" onclick="GetTest();" />
-<input type="button" value="add" onclick="addMarker(10,true)" />
-</div>
-<div>
-<input type="button" value="消去" onclick="clearAll();" />
-</div>
+  <div id="map" style="width:600px; height:480px;"></div>
+  <div class="sub-menu">
+    <h3>Load</h3>
+    <input type="button" value="search" onclick="GetTest();" />
+    <input type="button" value="add" onclick="addMarker(10,true)" />
+  </div>
+  <div>
+    <input type="button" value="消去" onclick="clearAll();" />
+  </div>
 
-<!-- Begin Yahoo! JAPAN Web Services Attribution Snippet -->
-<a href="http://developer.yahoo.co.jp/about">
+  <!-- Begin Yahoo! JAPAN Web Services Attribution Snippet -->
+  <a href="http://developer.yahoo.co.jp/about">
 <img src="http://i.yimg.jp/images/yjdn/yjdn_attbtn2_105_17.gif" width="105" height="17" title="Webサービス by Yahoo! JAPAN" alt="Webサービス by Yahoo! JAPAN" border="0" style="margin:15px 15px 15px 15px"></a>
-<!-- End Yahoo! JAPAN Web Services Attribution Snippet -->
+  <!-- End Yahoo! JAPAN Web Services Attribution Snippet -->
 
 
-<script>
-<!--
-var request;
-var map
-var x=[35.666969,35.666817,35.666908,35.666858,35.667039,35.667069];
-var y=[139.602417,139.601717,139.602356,139.601781,139.602356,139.602036]
+  <script>
+    <!--
+    var request;
+    var map
+    //var x = [35.666969, 35.666817, 35.666908, 35.666858, 35.667039, 35.667069];
+    //var y = [139.602417, 139.601717, 139.602356, 139.601781, 139.602356, 139.602036]
 
-window.onload = function() {
-    map = new Y.Map("map");
-    map.addControl( new Y.SliderZoomControl() );
-    map.addControl( new Y.LayerSetControl() );
-    map.drawMap(new Y.LatLng(35.1416414,137.036865), 15,"map");
-}
+    window.onload = function() {
+      map = new Y.Map("map");
+      map.addControl(new Y.SliderZoomControl());
+      map.addControl(new Y.LayerSetControl());
+      map.drawMap(new Y.LatLng(35.0688562, 137.1459658), 18, "map");
+    }
 
-//マーカー追加処理を定義
-function addMarker( i , single ) {
-  alert(event);
-    var geoBox = map.getBounds();
-    var min = geoBox.getSouthWest();
-    var max = geoBox.getNorthEast();
-    var dx = max.Lon - min.Lon;
-    var dy = max.Lat - min.Lat;
-    var markers = [];
-    n = 50
-    for ( var i = 0 ; i < n ; i++ ) {
+    //マーカー追加処理を定義
+    function addMarker(i, single) {
+      alert(event);
+      var geoBox = map.getBounds();
+      var min = geoBox.getSouthWest();
+      var max = geoBox.getNorthEast();
+      var dx = max.Lon - min.Lon;
+      var dy = max.Lat - min.Lat;
+      var markers = [];
+      n = 50
+      for (var i = 0; i < n; i++) {
         //ランダムなマーカーを生成
-        var lon = request.places[i*3].x;
-        var lat = request.places[i*3].y;
+        var lon = request.places[i * 3].x;
+        var lat = request.places[i * 3].y;
         console.log(i);
         console.log(lon);
         console.log(lat);
         //console.log(typeof(request.places[i].name));
         //console.log(marker);
-        var label = new Y.Label(new Y.LatLng(lon,lat), request.places[i*3].name);
+        var label = new Y.Label(new Y.LatLng(lon, lat), request.places[i * 3].name);
         /*if ( single ) {
             //マーカーをひとつ追加
             map.addFeature(marker);
@@ -78,49 +119,70 @@ function addMarker( i , single ) {
             markers.push(marker);
             map.addFeature(label);
         }*/
-      //  makers.push(marker);
+        //  makers.push(marker);
         map.addFeature(label);
-    }
-    if ( !single ) {
+      }
+      if (!single) {
         //マーカーを複数追加
         console.log("!single");
-        map.addFeatures( markers );
+        map.addFeatures(markers);
+      }
+      alert("Finished!");
     }
-    alert("Finished!");
-}
-function GetTest(){
-   alert(event);
-//   const request = new XMLHttpRequest();
-//   request.open("GET",`http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state`);
-//   request.addEventListener("load", (event) => {
-//    alert(event); // => 200
-//    console.log(event.target.responseText); // => "{...}"
-//    request.send();
-//});
- //var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
- var url = "https://dev01.dstn.club/dataspider/trigger/https2http";
- var xhr = new XMLHttpRequest();
- xhr.open('GET',url,true);
- xhr.onload = function(){
-   request = JSON.parse(xhr.responseText);
-  if(xhr.readyState == 4 && xhr.status == "200"){
-   //alert(JSON.stringify(request));
-   //alert(request.places[2].x);
-   alert("Finish Serching");
- }else{
-   alert.error(request);
-     }
-     }
-     xhr.send(null);
-}
-//地物削除処理を定義
-function clearAll() {
-    //地物を削除
-    map.clearFeatures();
-}
-//-->
-</script>
+    function GetTest() {
+      alert(event);
+      //   const request = new XMLHttpRequest();
+      //   request.open("GET",`http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state`);
+      //   request.addEventListener("load", (event) => {
+      //    alert(event); // => 200
+      //    console.log(event.target.responseText); // => "{...}"
+      //    request.send();
+      //});
+      //var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+      var url = "http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/places";
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.onload = function() {
+        request = JSON.parse(xhr.responseText);
+        if (xhr.readyState == 4 && xhr.status == "200") {
+          //alert(JSON.stringify(request));
+          //alert(request.places[2].x);
+          alert("Finish Serching");
+        } else {
+          alert.error(request);
+        }
+      }
+      xhr.send(null);
+    }
+    //地物削除処理を定義
+    function clearAll() {
+      //地物を削除
+      map.clearFeatures();
+    }
+    //-->
+  </script>
 </body>
+
 </html>
-<!-- text below generated by geocities.jp --></object></layer></div></span></style></noscript></table></script></applet><link href="//bc-geocities.yahoo.co.jp/js/no.css" rel="stylesheet" type="text/css"><script language="javascript">var jps=382116061;var jpt=1510397487</script><script language="javascript" src="//bc-geocities.yahoo.co.jp/js/no.js"></script><script language="javascript" src="//bc-geocities.yahoo.co.jp/js/geov2.js"></script><script language="javascript">geovisit();</script>
+<!-- text below generated by geocities.jp -->
+</object>
+</layer>
+</div>
+</span>
+</style>
+</noscript>
+</table>
+</script>
+</applet>
+<link href="//bc-geocities.yahoo.co.jp/js/no.css" rel="stylesheet" type="text/css">
+<script language="javascript">
+  var jps = 382116061;
+  var jpt = 1510397487
+</script>
+<script language="javascript" src="//bc-geocities.yahoo.co.jp/js/no.js"></script>
+<script language="javascript" src="//bc-geocities.yahoo.co.jp/js/geov2.js"></script>
+<script language="javascript">
+  geovisit();
+</script>
