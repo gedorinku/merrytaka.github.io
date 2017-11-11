@@ -23,7 +23,7 @@
 <div id="map" style="width:600px; height:480px;"></div>
 <div class="sub-menu">
 <h3>アイコン追加</h3>
-<input type="button" value="追加" onclick="addMarker(1)" />
+<input type="button" value="追加" onclick="GetTest" />
 <input type="button" value="100個追加" onclick="addMarker(100,true)" />
 </div>
 <div>
@@ -75,7 +75,15 @@ function addMarker( n , single ) {
         map.addFeatures( markers );
     }
 }
-
+function GetTest(){
+   const request = new XMLHttpRequest();
+   request.open("GET",`https://asciidwango.github.io/js-primer/use-case/ajaxapp/entrypoint/`);
+   request.addEventListener("load", (event) => {
+    console.log(event.target.status); // => 200
+    console.log(event.target.responseText); // => "{...}"
+    request.send();
+});
+ }
 //地物削除処理を定義
 function clearAll() {
     //地物を削除
