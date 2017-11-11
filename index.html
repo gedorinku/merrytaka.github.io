@@ -85,7 +85,7 @@ function GetTest(){
     console.log(event.target.responseText); // => "{...}"
     request.send();
 });
- }`);
+ });
    request.addEventListener("load", (event) => {
     console.log(event.target.status); // => 200
     console.log(event.target.responseText); // => "{...}"
