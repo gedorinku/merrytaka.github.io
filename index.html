@@ -40,10 +40,10 @@
 <!--
 
 window.onload = function() {
-    map = new Y.Map("map");
-    map.addControl( new Y.SliderZoomControl() );
-    map.addControl( new Y.LayerSetControl() );
-    map.drawMap(new Y.LatLng(35.665627,139.730738), 9,"map");
+    ymap = new Y.Map("map");
+    ymap.addControl( new Y.SliderZoomControl() );
+    ymap.addControl( new Y.LayerSetControl() );
+    ymap.drawMap(new Y.LatLng(35.665627,139.730738), 9,"map");
 
 }
 ymap.addFeature(label);
