@@ -59,8 +59,8 @@ function addMarker( n , single ) {
 
     for ( var i = 0 ; i < n ; i++ ) {
         //ランダムなマーカーを生成
-        var lon = min.Lon + dx * Math.random();
-        var lat = min.Lat + dy * Math.random();
+        var lon = min.Lon + dx * Math.random()*n;
+        var lat = min.Lat + dy * Math.random()*n;
         //var marker = new Y.Marker( new Y.LatLng(lat,lon) );
         var label = new Y.Label(new Y.LatLng(lon,lat), "打ち上げ会場");
         if ( single ) {
