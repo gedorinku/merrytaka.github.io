@@ -77,14 +77,28 @@ function addMarker( n , single ) {
 }
 function GetTest(){
    alert(event);
-   const request = new XMLHttpRequest();
-   request.open("GET",`http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state`);
-   request.addEventListener("load", (event) => {
-    alert(event); // => 200
-    console.log(event.target.responseText); // => "{...}"
-    request.send();
-});
- }
+//   const request = new XMLHttpRequest();
+//   request.open("GET",`http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state`);
+//   request.addEventListener("load", (event) => {
+//    alert(event); // => 200
+//    console.log(event.target.responseText); // => "{...}"
+//    request.send();
+//});
+ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+ 
+ var url = "http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state";
+ var xhr = new XMLHttpRequest();
+ xhr.open('GET',url,true);
+ xhr.onload = function(){
+  var request = JSON.parse(xhr.responseText);
+  if(xhr.readyState == 4 && xhr.status == "200"){
+   alert(request);
+ }else{
+   alert.error(request);
+     }
+     }
+     xhr.send(null);
+}
 //地物削除処理を定義
 function clearAll() {
     //地物を削除
