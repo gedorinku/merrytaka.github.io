@@ -23,8 +23,8 @@
 <div id="map" style="width:600px; height:480px;"></div>
 <div class="sub-menu">
 <h3>アイコン追加</h3>
-<input type="button" value="追加" onclick="GetTest();" />
-<input type="button" value="100個追加" onclick="addMarker(100,true)" />
+<input type="button" value="search" onclick="GetTest();" />
+<input type="button" value="add" onclick="addMarker(10,true)" />
 </div>
 <div>
 <input type="button" value="消去" onclick="clearAll();" />
@@ -38,35 +38,41 @@
 
 <script>
 <!--
+var request;
 var map;
 window.onload = function() {
     map = new Y.Map("map");
     map.addControl( new Y.SliderZoomControl() );
     map.addControl( new Y.LayerSetControl() );
-    map.drawMap(new Y.LatLng(35.665627,139.730738), 9,"map");
+    map.drawMap(new Y.LatLng(35.666969,139.602417), 9,"map");
 }
 
 //マーカー追加処理を定義
-function addMarker( n , single ) {
+function addMarker( i , single ) {
+  alert(event);
     var geoBox = map.getBounds();
     var min = geoBox.getSouthWest();
     var max = geoBox.getNorthEast();
     var dx = max.Lon - min.Lon;
     var dy = max.Lat - min.Lat;
     var markers = [];
-
+    n = 10
     for ( var i = 0 ; i < n ; i++ ) {
         //ランダムなマーカーを生成
-        var lon = min.Lon + dx * Math.random();
-        var lat = min.Lat + dy * Math.random();
-        var marker = new Y.Marker( new Y.LatLng(lat,lon) );
-        var label = new Y.Label(new Y.LatLng(lat,lon), "打ち上げ会場");
+        //alert(i)
+        var lon = request.places[i].x;
+        //alert(lon);
+        var lat = request.places[i].y;
+        //alert(lat);
+        //alert(request.places[i].name);
+        //var marker = new Y.Marker( new Y.LatLng(lat,lon) );
+        var label = new Y.Label(new Y.LatLng(lat,lon), request.places[i].name);
         if ( single ) {
             //マーカーをひとつ追加
-            map.addFeature(marker);
+            //map.addFeature(marker);
             map.addFeature(label);
         } else {
-            markers.push( marker );
+            //markers.push( marker );
             map.addFeature(label);
         }
     }
@@ -74,6 +80,7 @@ function addMarker( n , single ) {
         //マーカーを複数追加
         map.addFeatures( markers );
     }
+    alert("Finished!");
 }
 function GetTest(){
    alert(event);
@@ -86,13 +93,15 @@ function GetTest(){
 //});
  //var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
- var url = "http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state";
+ var url = "http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/places";
  var xhr = new XMLHttpRequest();
  xhr.open('GET',url,true);
  xhr.onload = function(){
-  var request = JSON.parse(xhr.responseText);
+   request = JSON.parse(xhr.responseText);
   if(xhr.readyState == 4 && xhr.status == "200"){
-   alert(JSON.stringify(request));
+   //alert(JSON.stringify(request));
+   //alert(request.places[2].x);
+   alert("Finish Serching");
  }else{
    alert.error(request);
      }
