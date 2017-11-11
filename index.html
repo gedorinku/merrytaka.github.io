@@ -79,7 +79,7 @@ function GetTest(){
    const request = new XMLHttpRequest();
    request.open("GET",`http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state`);
    request.addEventListener("load", (event) => {
-    console.log(event.target.status); // => 200
+    alert(event); // => 200
     console.log(event.target.responseText); // => "{...}"
     request.send();
 });
