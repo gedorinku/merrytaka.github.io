@@ -44,7 +44,7 @@ window.onload = function() {
     map.addControl( new Y.SliderZoomControl() );
     map.addControl( new Y.LayerSetControl() );
     map.drawMap(new Y.LatLng(35.665627,139.730738), 9,"map");
- 
+
 }
 ymap.addFeature(label);
 
@@ -75,6 +75,25 @@ function addMarker( n , single ) {
         map.addFeatures( markers );
     }
 }
+ function load(){
+   var params = {
+     app: 3,
+     id: 1
+   };
+
+ kintone.api('/k/v1/record', 'GET', params, function(resp) {
+     // success:レコード番号を表示する
+     alert(resp['record']['record_no']['value']);
+ }, function(resp) {
+     //error:エラーの場合はメッセージを表示する
+     var errmsg = 'レコード取得時にエラーが発生しました。';
+     // レスポンスにエラーメッセージが含まれる場合はメッセージを表示する
+     if (resp.message !== undefined) {
+         errmsg += '\n' + resp.message;
+     }
+     alert(errmsg);
+ });
+ }
 
 //地物削除処理を定義
 function clearAll() {
