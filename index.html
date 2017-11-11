@@ -39,12 +39,15 @@
 <script>
 <!--
 var request;
-var map;
+var map
+var x=[35.666969,35.666817,35.666908,35.666858,35.667039,35.667069];
+var y=[139.602417,139.601717,139.602356,139.601781,139.602356,139.602036]
+
 window.onload = function() {
     map = new Y.Map("map");
     map.addControl( new Y.SliderZoomControl() );
     map.addControl( new Y.LayerSetControl() );
-    map.drawMap(new Y.LatLng(35.666969,139.602417), 9,"map");
+    map.drawMap(new Y.LatLng(35.666969,139.602417), 18,"map");
 }
 
 //マーカー追加処理を定義
@@ -56,28 +59,31 @@ function addMarker( i , single ) {
     var dx = max.Lon - min.Lon;
     var dy = max.Lat - min.Lat;
     var markers = [];
-    n = 10
+    n = 50
     for ( var i = 0 ; i < n ; i++ ) {
         //ランダムなマーカーを生成
-        //alert(i)
-        var lon = request.places[i].x;
-        //alert(lon);
-        var lat = request.places[i].y;
-        //alert(lat);
-        //alert(request.places[i].name);
-        //var marker = new Y.Marker( new Y.LatLng(lat,lon) );
-        var label = new Y.Label(new Y.LatLng(lat,lon), request.places[i].name);
-        if ( single ) {
+        var lon = request.places[i*3].x;
+        var lat = request.places[i*3].y;
+        console.log(i);
+        console.log(lon);
+        console.log(lat);
+        //console.log(typeof(request.places[i].name));
+        //console.log(marker);
+        var label = new Y.Label(new Y.LatLng(lon,lat), request.places[i*3].name);
+        /*if ( single ) {
             //マーカーをひとつ追加
-            //map.addFeature(marker);
+            map.addFeature(marker);
             map.addFeature(label);
         } else {
-            //markers.push( marker );
+            markers.push(marker);
             map.addFeature(label);
-        }
+        }*/
+      //  makers.push(marker);
+        map.addFeature(label);
     }
     if ( !single ) {
         //マーカーを複数追加
+        console.log("!single");
         map.addFeatures( markers );
     }
     alert("Finished!");
@@ -93,7 +99,7 @@ function GetTest(){
 //});
  //var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
- var url = "https://dev01.dstn.club/dataspider/trigger/https2http";
+ var url = "http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/places";
  var xhr = new XMLHttpRequest();
  xhr.open('GET',url,true);
  xhr.onload = function(){
