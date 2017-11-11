@@ -51,6 +51,7 @@
   <script src="https://map.yahooapis.jp/js/V1/jsapi?appid=dj00aiZpPXFkWU1aWkdUSkhTeiZzPWNvbnN1bWVyc2VjcmV0Jng9MWQ-" type="text/javascript" charset="UTF-8"></script>
   <style>
     .sub-menu {
+      width: 593px;
       margin: 4px;
       padding: 4px;
       border: 1px solid;
@@ -60,6 +61,10 @@
       font-size: 14px;
       margin: 2px;
       padding: 2px;
+    }
+
+    .padding {
+        padding: 8px;
     }
   </style>
 </head>
@@ -71,7 +76,7 @@
     <input type="button" class="btn btn-success" value="search" onclick="GetTest();" />
     <input type="button" class="btn btn-success" value="add" onclick="addMarker(10,true)" />
   </div>
-  <div>
+  <div class="padding">
     <input type="button" class="btn btn-danger" value="消去" onclick="clearAll();" />
   </div>
 
