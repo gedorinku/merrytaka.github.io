@@ -44,9 +44,9 @@ window.onload = function() {
     ymap.addControl( new Y.SliderZoomControl() );
     ymap.addControl( new Y.LayerSetControl() );
     ymap.drawMap(new Y.LatLng(35.665627,139.730738), 9,"map");
-
+    ymap.addFeature(label);
 }
-ymap.addFeature(label);
+//ymap.addFeature(label);
 
 //マーカー追加処理を定義
 function addMarker( n , single ) {
@@ -77,7 +77,7 @@ function addMarker( n , single ) {
 }
  function GetTest(){
    const request = new XMLHttpRequest();
-   request.open("GET",`https://asciidwango.github.io/js-primer/use-case/ajaxapp/entrypoint/`);
+   request.open("GET",`http://ec2-13-114-146-127.ap-northeast-1.compute.amazonaws.com:7700/dataspider/trigger/door-state`);
    request.addEventListener("load", (event) => {
     console.log(event.target.status); // => 200
     console.log(event.target.responseText); // => "{...}"
